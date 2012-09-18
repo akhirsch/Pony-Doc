@@ -1,0 +1,7 @@
+* Pony-Doc
+
+This is the repository for the documentation for the Pony Compiler, a compiler for extended C, compiling into ANSI C99.
+
+Pony was originally created for Senior Design at The George Washington University in 2010-2011 by Patrick Thomson. I have now inherited it, and am working on it for the 2012-2013 Senior Design at The George Washington University. Both Patrick and myself have worked under the mentorship of Professor Gabe Parmer.
+
+Unfortunately, as this is an active school project, the source repository is closed now. This is merely a documentation repository.
