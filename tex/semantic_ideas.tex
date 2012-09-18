@@ -1,4 +1,4 @@
-% Created 2012-09-08 Sat 15:34
+% Created 2012-09-17 Mon 23:25
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -63,9 +63,24 @@ data expression = Plus expression term
 
 It should be possible (through dynamic programming) to create a listing of all node types that can be reached from an \verb~expression~ node. Any transformation that works on an \verb~expression~ node also affects all nodes reachable from the \verb~expression~ node. Thus, we can have a type theory of nodes with a subtyping relation.
 
-Now, the difficulty comes in detecting whether a transformation will run on nodes of a type. This is the same as giving this transformation a type. 
+What allows for tighter expressiveness for strong collision is the idea of guards. The idea here is that if you have the following transformation:
 
-In order to work on a type, a transformation must deconstruct the type and then construct a new type. This means that we can give such a type to a term and warn the user if collision is possible.
+\begin{lstlisting}
+trans :: Expr -> Expr
+trans Plus e1 e2 = Minus e1 e2
+trans Minus e1 e2 = Plus e1 e2
+trans e@(Standalone _) = id e
+\end{lstlisting}
+
+We then \emph{refine} the type of trans to 
+
+\begin{lstlisting}
+trans :: Expr -> Expr | forall e. e = (Plus e1 e2) \/ (Minus e1 e2)
+\end{lstlisting} 
+
+For more complex transformations, this is the same as type inference for dependent types. A cursory search of the literature tells us that this may not be possible in the general case. (See: \href{http://research.microsoft.com/en-us/people/dimitris/pie.pdf}{Dependent Types: Easy as PIE} and \href{http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&ved=0CDsQFjAC&url=http%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fdownload%3Fdoi%3D10.1.1.30.8049%26rep%3Drep1%26type%3Dpdf&ei=kOdXUIKzD8jp0QHzmoCwBg&usg=AFQjCNHhbxCQcN_3CiBI3SMJyzZpzvDrkw}{Type Inference and Reconstruction for First Order Dependent Types}.)
+
+However, even if this is not decidable in the general case, it may be possible to find correct types, but not types that are as ``tight'' as possible, and thus we would be too conservative in our warnings. However, this would be acceptable in most cases.
 \section{Weak Collision}
 \label{sec-3}
 
