@@ -1,4 +1,4 @@
-#+TITLE:     Pony Working Document\\ {\small A Brain Dump}
+#+TITLE:     Pony Working Document
 #+AUTHOR:    Andrew Hirsch
 #+EMAIL:     akhirsch@gwu.edu
 #+DATE:      \today
