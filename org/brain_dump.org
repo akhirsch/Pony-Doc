@@ -1,4 +1,4 @@
-#+TITLE:     Semantic Ideas
+#+TITLE:     Pony Working Document\\ {\small A Brain Dump}
 #+AUTHOR:    Andrew Hirsch
 #+EMAIL:     akhirsch@gwu.edu
 #+DATE:      \today
@@ -64,6 +64,30 @@ trans :: Expr -> Expr | forall e. e = (Plus e1 e2) \/ (Minus e1 e2)
 \end{lstlisting} 
 
 For more complex transformations, this is the same as type inference for dependent types. A cursory search of the literature tells us that this may not be possible in the general case. (See: [[http://research.microsoft.com/en-us/people/dimitris/pie.pdf][Dependent Types: Easy as PIE]] and [[http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&ved=0CDsQFjAC&url=http%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fdownload%3Fdoi%3D10.1.1.30.8049%26rep%3Drep1%26type%3Dpdf&ei=kOdXUIKzD8jp0QHzmoCwBg&usg=AFQjCNHhbxCQcN_3CiBI3SMJyzZpzvDrkw][Type Inference and Reconstruction for First Order Dependent Types]].)
+
+It appears from the above example that we don't have much added from guards. However, consider the following example:
+
+\begin{lstlisting}
+data NumType = NumFloat Float
+             | NumInt Int   
+             | NumLong Long 
+
+doIntLong :: NumType -> NumType | forall (NumInt n). n > 0
+doIntLong f@(NumFloat _) = id f
+doIntLong i@(NumInt n)
+   | n > 0 = NumLong n 
+   | otherwise = id i
+doIntLong l@(NumLong _) = id l
+
+doIntFloat :: NumType -> NumType | forall (NumInt n). n <= 0
+doIntFloat f@(NumFloat _) = id f
+doIntFloat i@(NumInt n)
+   | n <= 0 = NumFloat (fromInteger f) 
+   | otherwise = id i                  
+doIntFloat l@(NumLong _) = id l
+\end{lstlisting}
+
+As you can see, these transformations (~doIntLong~ and ~doIntFloat~) will never collide. However, naively looking at the types they work on, even branching into the type to see what constructors it uses, would be too weak to decide this. But we see that is impossible to ever unify the refined types of ~doIntFloat~ and ~doIntLong~. Thus, our system, with guards, can tell that these transformations will compose.
 
 However, even if this is not decidable in the general case, it may be possible to find correct types, but not types that are as "tight" as possible, and thus we would be too conservative in our warnings. However, this would be acceptable in most cases.
 
