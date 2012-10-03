@@ -1,4 +1,4 @@
-% Created 2012-09-21 Fri 13:21
+% Created 2012-09-22 Sat 13:00
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -124,5 +124,16 @@ Because our version of weak collision only works on the node level, it is possib
 
 
 The holy grail of this work would be to find an algorithm that would detect that two transformations are incompatible in \textbf{exactly} the cases where they may overwrite one another. However, this is an uncomputable problem (see: \href{http://en.wikipedia.org/wiki/Rice's_theorem}{Rice's Theorem}). It may very well be possible to create better versions of strong collision. However, this is difficult work, along the same lines of the work on halting (see: \href{http://research.microsoft.com/en-us/um/cambridge/projects/terminator/}{Microsoft Terminator}).
+\section{Parsing}
+\label{sec-6}
+
+
+Parsing is a hard problem in Pony, harder than might be expected. Haskell is very commonly used for compilers and interpreters, so parsing can't be that hard of a problem, right?
+
+This is correct in most senses. There are two very good common parsing tools for Haskell: Happy, a YACC-style parser, and Parsec, a parser combinator library using monads. However, Pony runs into something interesting: \href{http://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt}{The Expression Problem}. This states that in functional languages, it's hard to come up with new cases to a datatype, while in (Object-Oriented) imperative programming languages, it is difficult to add new functions to a datatype. (Interestingly, C seems to fall into the functional camp here: I don't know that that means anything, but it's interesting.)
+
+Since Pony requires parsers that can be arbitrarily extended, we have to solve the expression problem, and this is \emph{not} easy. We plan to use a technique from the functional pearl \href{http://journals.cambridge.org/action/displayAbstract?fromPage=online&aid=1899152}{Data Types a la Carte}, which allows for subtyping in Haskell. (Basically, it lifts Either to kind \(* \to *\), with automatic injections and searches, but this is not important.) We will combine this with the Parsec library. 
+
+Unfortunately, Parsec is currently in its third iteration (Parsec 3), and has a very complicated structure. However, by moving to the first iteration of the Parsec library (Parsec 1), we may be able to take advantage of the simpler structure of the monad. (We do not currently use anything that is more powerful than the Parsec 1 monad, as far as I'm aware.)
 
 \end{document}
