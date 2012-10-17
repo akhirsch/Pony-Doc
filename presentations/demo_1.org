@@ -1,0 +1,54 @@
+#+TITLE:     Pony: Demo 1
+#+AUTHOR:    Andrew Hirsch
+#+EMAIL:     akhirsch@gwmail.gwu.edu
+#+DATE:      2012-10-17 Wed
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+#+startup:beamer
+#+LaTeX_CLASS:beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+latex_header: \titlegraphic{\includegraphics{../pictures/haskell_horse.jpg}}
+#+latex_header: \setbeamertemplate{navigation symbols}{}
+#+latex_header: \mode<beamer>{\usetheme{CambridgeUS}}
+#+latex_header: \institute{GWU}
+
+* Idea
+
+- Create a small, extensible calculator language
+- Using techniques that will be used in extensibility of Pony
+
+* The Language
+
+- A simple language: Addition and Subtraction
+- Stack-based language; it's easier to parse
+- + - 3 2 3 = (3 - 2) + 3
+\pause
+- A simple extension: multiplication
+- * + - 3 2 3 4 = ((3 - 2) + 3) * 4
+
+* Libraries
+
+- Data.Comp
+  - Compositional datatypes
+  - based off of data types a la carte
+  - VERY difficult library
+- Text.ParserCombinators.Parsec
+  - Parser combinator library
+  - Builds parsers from smaller parsers
+  - Parsec 2: much simpler internal structure than Parsec 3
+
+* Technical Difficulties
+
+- The two libraries do NOT like to play together
+- Compositional datatype-based evaluation is picky about when it will evaluate
+- Composing parsers is unsolved
+  - Luckily, it looks like it might be easier than we thought.

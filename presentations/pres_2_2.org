@@ -1,0 +1,111 @@
+#+TITLE:     Pony: Evolving Languages Without (As Many) Bugs
+#+AUTHOR:    Andrew Hirsch
+#+EMAIL:     akhirsch@gwmail.gwu.edu
+#+DATE:      September 27, 2012
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+latex_header: \usepackage{epigraph}
+#+latex_header: \mode<beamer>{\usetheme{Boadilla}}
+#+latex_header: \mode<beamer>{\usecolortheme{crane}}
+#+latex_header: \mode<beamer>{\useoutertheme[footline=authortitle]{miniframes}}
+#+latex_header: \institute{The George Washington University}
+
+
+
+* Bugs Are Bad
+
+\includegraphics{../pictures/no_bug.png}
+
+- /Bugs/ are the errors we find in software
+- Any piece of software probably has many bugs
+- Spoiler: when there are errors in code, things don't work right
+
+* The Consequences of Bugs
+
+\includegraphics[scale=0.25]{../pictures/BSOD.png}
+\includegraphics[scale=0.25]{../pictures/car-crash.jpg} \\
+\includegraphics[scale=0.25]{../pictures/burning_money.jpg}
+
+* The Causes of Bugs
+
+\epigraph{There are two ways to write error-free programs; only the third one works}{Alan Perlis, "Epigrams on Programming"}
+
+- What causes bugs?
+  \pause
+  - Bad Specifications
+    \pause
+  - Changing Demands
+    \pause
+  - Multiple Coders
+    \pause
+  - Poorly Documented Code
+    \pause
+  - Code "Too Big To Handle"
+
+* Software is Hard
+
+\epigraph{Every program attempts to expand until it can read mail. Those programs that cannot so expand are replaced by ones which can.}{Jamie Zawinski}
+
+- It's nearly impossible to hold all of a (complicated) program in a single head
+- Trying to do so causes lots of bugs
+- How do we fix it?
+
+* Using Slang
+
+\epigraph{Slang is a language that rolls up its sleeves, spits on its hands and goes to work.}{Carl Sandburg}
+
+- We use the phrase "write code" for a reason: code is language
+- Slang is often used because it's easier or more expressive
+\pause
+- Can we add slang to code?
+\pause
+- Yes!
+- That is the point of Pony
+
+* Adding Slang to Code
+
+\includegraphics[scale=0.25]{../pictures/slang.jpg}
+
+- Since code is a language, let's add slang!
+- First, we make the computer recognize the slang
+- Then, we make it understand the slang
+\pause
+- But, is this a perfect solution?
+
+* Problems with Slang
+
+\epigraph{GIGO:\\ 'Garbage In, Garbage Out'}{The Jargon File}
+
+- People commonly use different types of slang
+- These different 'slangs' might use some of the same words in very different ways
+- How do you tell what they mean?
+\pause
+- It's easy for a human
+- VERY hard for a computer
+\pause
+- Pony attempts to tell a programmer when they are in this situation
+\pause
+- But it's not always possible
+
+* Conclusion: The Impossible Quest for the Holy Grail
+
+\includegraphics[scale=0.5]{../pictures/holy_grail.jpg}
+
+- We want to right bug-free code
+- Like the search for the holy grail, it seems impossible
+- However, it is possible to get closer by making it easier for programmers to express themselves
+- Pony is an important step in that process
+
+
