@@ -1,0 +1,69 @@
+% Created 2012-10-22 Mon 22:36
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Business Plan for Pony}
+\author{Andrew Hirsch}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{Business Plan}
+\label{sec-1}
+\subsection{Executive Summary}
+\label{sec-1-1}
+
+
+We have a large and growing sector of our economy that is based on computing, much of which is in the field of embedded systems. However, embedded systems is especially hard to develop for due to the need for low-level computation. Thus, none of the higher-level language features that most programmers have come to expect are available. We intend to provide a compiler that allows us to bridge this gap for C, the most popular programming language for embedded systems work.
+\subsection{Market Analysis}
+\label{sec-1-2}
+
+
+There is a growing need for embedded systems, and thus for embedded systems developers. Consumers expect more and more intelligence from the appliances around them, and this comes from embedded systems. However, it is difficult to get most programmers up to speed as embedded systems developers, as there are no higher-level language features available. Thus, companies are looking for ways to reduce the cost of moving programmers to embedded systems.
+
+As embedded systems get more ubiquitous, there is also a greater demand for their assurance: the systems in airplanes, cars, and indoor heating systems all hold human lives in their hands. However, current development methods are not helpful in reaching this goal.
+\subsection{Company Description}
+\label{sec-1-3}
+
+
+Pony provides the Pony Compiler, a C to C compiler. The Pony Compiler allows users to add higher-level features to C, allowing more mainstream programmers to feel comfortable in an embedded systems development environment. It also allows for more verification of the code; since the Pony Compiler is written in the Haskell programming language, it is much easier to prove properties of the compiler than other compilers. 
+\subsection{Marketing and Sales}
+\label{sec-1-4}
+
+
+It is difficult to bring a new compiler to market, especially without IDE support. Thus, we shall offer the Pony Compiler free of charge as an Open Source project. The difficulty then is capitalizing on an open source project. We shall operate on an advertisement-based model, as well as accepting donations and providing paid-for support. This model may seem unconventional at first, however, it is popular in the modern era. 
+\section{Social Impact}
+\label{sec-2}
+\subsection{The Ethical Impact of the Pony Compiler}
+\label{sec-2-1}
+
+
+If the Pony Compiler were widely adopted, we could expect to see the number of bugs in embedded systems to fall. Since the Pony Compiler allows for greater assurance of code, we could expect to find that many bugs in the pedestrian parts of embedded systems -- data structures, threading, and the like -- would be greatly reduced due to the ability to replace random testing with sure proof. This could make life much more convenient every day, and possibly even save human lives.
+\subsection{Difficulties in team management}
+\label{sec-2-2}
+
+
+As has been described before by many (see: The Mythical Man-Hour, The Cathedral and the Bazaar), there are difficulties in teams that are spread out geographically due to communication lines. The common approach for open source projects is to adopt a Bazaar style of development. However, due to the powerful mathematical nature of the Pony Compiler, we cannot accept this.
+
+Our technique is to keep the development team small. Thus, we can reduce the necessary complexity of having large numbers of spread-out developers. This necessitates that all team members be relatively well-versed in C, Haskell, and the necessary mathematics; and that all team members be relatively willing to work together. 
+
+\end{document}

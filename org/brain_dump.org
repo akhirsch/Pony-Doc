@@ -117,3 +117,23 @@ This is correct in most senses. There are two very good common parsing tools for
 Since Pony requires parsers that can be arbitrarily extended, we have to solve the expression problem, and this is /not/ easy. We plan to use a technique from the functional pearl [[http://journals.cambridge.org/action/displayAbstract?fromPage=online&aid=1899152][Data Types a la Carte]], which allows for subtyping in Haskell. (Basically, it lifts Either to kind \(* \to *\), with automatic injections and searches, but this is not important.) We will combine this with the Parsec library. 
 
 Unfortunately, Parsec is currently in its third iteration (Parsec 3), and has a very complicated structure. However, by moving to the first iteration of the Parsec library (Parsec 1), we may be able to take advantage of the simpler structure of the monad. (We do not currently use anything that is more powerful than the Parsec 1 monad, as far as I'm aware.)
+
+
+** Parsing and Compositional Datatypes
+
+Recall the definition of term from _Data Types a la Carte_:
+
+\begin{lstlisting}
+-- Term f :: (Functor f) => f -> Term f
+data Term f = Term { unTerm :: f (Term f) }
+\end{lstlisting}
+
+From this definition, then, we can see that Term f calculates the fixed point of the functor f. Then, we can lift that functor f into another functor g:
+
+\begin{lstlisting}
+
+injectTerm :: (Functor f, Functor g, f :<: g) => Term f -> Term g
+injectTerm termF = Term { unTerm = inject . (fmap injectTerm) $ unTerm termF }
+
+\end{lstlisting}
+
