@@ -1,38 +1,42 @@
-{-# LANGUAGE OverlappingInstances, TypeOperators #-}
+{-# LANGUAGE OverlappingInstances, TypeOperators, FlexibleContexts, OverlappingInstances #-}
 module Calc.Parser where
   import Data.Comp
+  import Control.Monad.Fix
   import Text.ParserCombinators.Parsec
   import Calc.Base
   import Calc.Extension
 
+  sigParserMaker :: (f :<: Sig) => Parser (Term f) -> Parser (Term Sig)
+  sigParserMaker p = opParser p <|> valueParser p
+  
   sigParser :: Parser (Term Sig)
-  sigParser = opParser <|> valueParser
+  sigParser = fix sigParserMaker
 
   valueParser :: Parser (Term Sig)
   valueParser = do
     num <- many digit
     return . iConst $ read num
   
-  opParser :: Parser (Term Sig)
-  opParser = addParser <|> subParser
-  
-  addParser :: Parser (Term Sig)
-  addParser = do
+  opParser :: (f :<: Sig) => Parser (Term f) -> Parser (Term Sig)
+  opParser p = addParser p <|> subParser p
+               
+  addParser :: (f :<: Sig) => Parser (Term f) -> Parser (Term Sig)
+  addParser p = do
     char '+'
     spaces
-    term1 <- sigParser
+    term1 <- p
+    spaces 
+    term2 <- p
     spaces
-    term2 <- sigParser
-    spaces
-    return $ iAdd term1 term2
+    return $ iAdd (deepInject2 term1) (deepInject2 term2)
     
-  subParser :: Parser (Term Sig)
-  subParser = do 
+  subParser :: (f :<: Sig) => Parser (Term f) -> Parser (Term Sig)
+  subParser p = do 
     char '-'
     spaces
-    term1 <- sigParser
+    term1 <- p
     spaces
-    term2 <- sigParser
+    term2 <- p
     spaces
     return $ iSub term1 term2
 

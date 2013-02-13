@@ -1,0 +1,183 @@
+#+TITLE:     30% Demonstration
+#+AUTHOR:    Andrew Hirsch
+#+EMAIL:     akhirsch@gwmail.gwu.edu
+#+DATE:      \today
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+#+startup:beamer
+#+LaTeX_CLASS:beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+latex_header: \titlegraphic{\includegraphics{../pictures/haskell_horse.jpg}}
+#+latex_header: \setbeamertemplate{navigation symbols}{}
+#+latex_header: \mode<beamer>{\usetheme{CambridgeUS}}
+#+latex_header: \institute[GWU]{The George Washington University}
+#+latex_header: \usepackage{listings}
+#+latex_header: \lstset{language=Haskell, basicstyle=\scriptsize}
+
+* The Form of Data
+
+- Datatypes: "Sum" of constructors
+- Constructors: functions $F$ that take data of type a into data $F a$
+
+\begin{lstlisting}
+data Directions = North Int
+                | South Int
+                | East Int
+                | West Int
+\end{lstlisting}
+
+\begin{lstlisting}
+data Directions' = North' :+: South' :+: East' :+: West'
+data North' = North' Int
+data South' = South' Int
+data East'  = East' Int
+data West'  = West' Int
+\end{lstlisting}
+
+$$\mathtt{Directions} \cong \mathtt{Directions'}$$
+
+
+* The Form of Data, Ctd.
+
+- What about recursive data types?
+
+\begin{lstlisting}
+data ListInt = Nil
+             | Cons Int ListInt
+\end{lstlisting}
+
+\begin{lstlisting}
+data ListInt' = Nil :+: Cons
+data Nil e = Nil
+data Cons e = Cons Int e
+\end{lstlisting}
+
+- What's special about ~Cons~?
+  - Cons is a /functor/
+  - Cons should have a function \lstinline{fmap :: (a -> b) -> (Cons a -> Cons b)}
+  - Nil is also a functor, trivially
+  - ListInt' is also a functor
+
+$$\mathtt{ListInt} \cong \mathtt{ListInt'}?$$
+
+* Tying the Recursive knot
+
+\begin{lstlisting}
+data Term f = f (Term f)
+\end{lstlisting}
+
+- $\mathtt{ListInt} \cong \mathtt{Term (ListInt')}$
+- "Tying the Recursive Knot"
+
+* Parsing into Tied Structures
+
+\begin{lstlisting}
+
+parseListInt :: Parser ListInt'
+parseListInt = parseCons <|> parseNil
+
+parseCons :: Parser ListInt'
+parseCons = do
+  i <- parseInt
+  char ':'
+  l <- parseListInt
+  return $ iCons i l
+
+parseNil :: Parser ListInt'
+parseNil = do
+  string "[]"
+  return iNil
+
+\end{lstlisting}
+
+* Parsing into Untied Structures
+
+\begin{lstlisting}
+
+parseListInt :: Parser e -> Parser (ListInt' e)
+parseListInt p = (do
+                    c <- parseCons e
+		    return $ inr c)
+             <|> (do
+	            n <- parseNil e
+		    return $ inl c)
+
+parseCons :: Parser e -> Parser (Cons e)
+parseCons p = do
+  i <- parseInt
+  char ':'
+  e <- p
+  return $ Cons i p
+
+parseNil :: Parser e -> Parser (Nil e)
+parseNil p = do
+  string "[]"
+  return Nil
+
+\end{lstlisting}
+
+* Tying while parsing?
+
+- Can we use the code last slide to get a parser for ~Term(ListInt')~?
+- Need some sort of /fixed point/ for parsers
+- None currently exists
+
+* Solution: Side Step
+
+- We instead introduce grammars with inheritance
+- Grammars can /extend/ other grammars
+- Those then get translated into a full grammar
+- Grammars have ADTs and Happy files generated automatically
+- Happy = YACC for Haskell
+* Example: EBNF for EBNF
+
+\scriptsize
+
+\begin{verbatim}
+Grammar EBNF {
+
+EBNF ::= {Production}
+
+Production ::= Identifier "::=" Expression ".".
+
+Expression ::= Term {"|" Term}.
+
+Term ::= Factor {Factor}.
+
+Factor ::= Identifier
+         | "[" Expression "]"
+         | "(" Expression ")"
+         | "{" Expression "}"
+         | Literal.
+
+Identifier ::= Character { Character }.
+
+Literal ::= "'" Character { Character }
+          | '"' Character { Character }.
+ 
+}
+
+\end{verbatim}
+
+* Example: EBNF Subgrammar for EBNF Subgrammars
+
+\scriptsize
+
+\begin{verbatim}
+
+Grammar EBNFSubgrammar extends EBNF {
+
+Production ::+ Identifier "::+" Expression.
+
+}
+
+\end{verbatim}

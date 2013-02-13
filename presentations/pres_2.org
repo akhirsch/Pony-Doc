@@ -39,6 +39,7 @@
   
 ** Change Your Language
 
+
 - Instead of changing thoughts, we should change languages!
 - Pony allows us to change C
   - For data structures, add objects
@@ -82,5 +83,6 @@
   - Extensible parsers have not been written in pure functional ways before
   - Collision detection is new, and has not been attempted in our general framework
   - These contribute to our understanding of the limits of extensible languages
+
 
 
