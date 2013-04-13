@@ -1,4 +1,4 @@
-#+TITLE:     90% Demonstration
+#+TITLE:     Composite Languages
 #+AUTHOR:    Andrew Hirsch
 #+EMAIL:     akhirsch@gwmail.gwu.edu
 #+DATE:      Thursday, January 17, 2013 
@@ -105,4 +105,4 @@
 - Code generated automatically!
 
 * Demonstration
-\todo{Video here}
+\includegraphics[scale=0.25]{../pictures/demo.png}
